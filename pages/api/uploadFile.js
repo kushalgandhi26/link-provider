@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
+import fs from "fs";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -11,10 +12,13 @@ export default async function handler(req, res) {
     try {
       const fileId = uuidv4();
 
+      const fileName = "some-file.pdf";
       const response = await axios.get(req.body.url, {
         responseType: "arraybuffer", // Handle PDF as binary data
         maxContentLength: 10240 * 10240, // Limit file size to 10MB
       });
+
+      fs.writeFileSync(fileName, response.data);
 
       const uploadFile = await supabase.storage
         .from("avatars")

@@ -2,9 +2,10 @@ import Head from "next/head";
 import { useState } from "react";
 
 export default function Home() {
+  const [link, setLink] = useState("");
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    console.log(event.target[0].value);
     try {
       const response = await fetch("/api/uploadFile", {
         method: "POST",
@@ -13,8 +14,8 @@ export default function Home() {
         },
         body: JSON.stringify({ url: event.target[0].value }),
       });
-      const data = await response.json();
-      console.log(data);
+      const { data } = await response.json();
+      setLink(data.signedURL);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -30,6 +31,7 @@ export default function Home() {
       <form onSubmit={handleFormSubmit}>
         <input type="text" />
         <button type="submit">Upload</button>
+        <div>Link: {link}</div>
       </form>
     </>
   );
