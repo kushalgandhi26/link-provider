@@ -15,7 +15,7 @@ export default function Home() {
         body: JSON.stringify({ url: event.target[0].value }),
       });
       const { data } = await response.json();
-      setLink(data.signedURL);
+      setLink(data.signedUrl);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -31,7 +31,9 @@ export default function Home() {
       <form onSubmit={handleFormSubmit}>
         <input type="text" />
         <button type="submit">Upload</button>
-        <div>Link: {link}</div>
+        <div>
+          Link: <a href={link}>{link}</a>
+        </div>
       </form>
     </>
   );
