@@ -18,17 +18,25 @@ export default async function handler(req, res) {
         maxContentLength: 10240 * 10240, // Limit file size to 10MB
       });
 
-      fs.writeFileSync(fileName, response.data);
+      // Set response headers for file download
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader(
+        "Content-Disposition",
+        'attachment; filename="downloaded.pdf"'
+      );
 
-      const uploadFile = await supabase.storage
-        .from("avatars")
-        .upload(`${fileId}.pdf`, response.data);
+      // Send the PDF data as response
+      res.send(Buffer.from(response.data, "binary"));
 
-      const { data, error } = await supabase.storage
-        .from("avatars")
-        .createSignedUrl(uploadFile.data.path, 3600);
+      // const uploadFile = await supabase.storage
+      //   .from("avatars")
+      //   .upload(`${fileId}.pdf`, response.data);
 
-      res.status(200).json({ data, error });
+      // const { data, error } = await supabase.storage
+      //   .from("avatars")
+      //   .createSignedUrl(uploadFile.data.path, 3600);
+
+      // res.status(200).json({ data, error });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
