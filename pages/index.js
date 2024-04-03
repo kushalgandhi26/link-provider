@@ -28,6 +28,8 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <h2>Link Provider for supabase bucket</h2>
+      <h3>Paste any online hosted url of pdf and get supabase hosted link</h3>
       <form onSubmit={handleFormSubmit}>
         <input type="text" />
         <button type="submit">Upload</button>
